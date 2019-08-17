@@ -1,0 +1,96 @@
+<div class="page-container">
+	<div class="container">
+		<div class="row">
+
+			<!-- start of page content -->
+			<div class="span8 page-content">
+
+				<ul class="breadcrumb">
+					<li><a href="#">Knowledge Base Theme</a><span class="divider">/</span></li>
+					<li><a href="#"
+						title="View all posts in Server &amp; Database">Server &amp;
+							Database</a> <span class="divider">/</span></li>
+					<li class="active">Integrating WordPress with Your Website</li>
+				</ul>
+
+				<article class=" type-post format-standard hentry clearfix">
+
+					<h1 class="post-title">
+						<a id="articlesTitle" href="#">文章题目</a>
+					</h1>
+
+					<div class="post-meta clearfix">
+						<span id="updateTime" class="date">xxxx年xx月xx日</span> <span
+							class="category"><a href="#"
+							title="View all posts in Server &amp; Database">Server &amp;
+								Database</a></span> <span class="comments"><a href="#"
+							title="Comment on Integrating WordPress with Your Website">3
+								Comments</a></span> <span id="likeCount" class="like-count">66</span>
+					</div>
+					<!-- end of post meta -->
+					<!-- 文章主体 -->
+					<div id="articleData"></div>
+
+				</article>
+
+				<div id="likeBtn"></div>
+
+				<div id="comments"></div>
+
+				<!-- end of comments -->
+
+			</div>
+			<!-- end of page content -->
+
+
+			<!-- start of sidebar -->
+			<div id="rightSidebar"></div>
+			<!-- end of sidebar -->
+		</div>
+	</div>
+</div>
+<script>
+
+	$(function(){
+		$.getJSON("artile/testArtile",function(result){
+			doHandleResponseResult(result);
+		})
+	})
+	
+	
+        //处理服务端返回的结果
+        function doHandleResponseResult(result) {
+                //console.log(result);
+                if (result.status == 200) {//呈现数据(重点)
+                        //将日志记录呈现在本页面的tbody位置
+                        doSetTableBodyRows(result.data.records);
+                        //将分页信息呈现在分页div中
+                       // doSetPagination(result.data);
+                } else {
+                        alert(result.message);
+                }
+        }
+        //将日志记录呈现在tbody中
+        function doSetTableBodyRows(records) {
+      
+        var title =	$("#articlesTitle");
+        title.empty();
+        title.append(records.title);
+        
+        var updateTime = $("#updateTime");
+        updateTime.empty();
+        updateTime.append(records.updateTime);
+        
+        var likeCount = $("#likeCount");
+        likeCount.empty();
+        likeCount.addend(records.likeCount);
+        
+        }
+
+   
+
+      
+
+	
+
+</script>

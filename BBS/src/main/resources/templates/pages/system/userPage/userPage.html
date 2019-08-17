@@ -1,0 +1,206 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- META TAGS -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Knowledge Base Theme</title>
+
+<link rel="shortcut icon" href="images/favicon.png" />
+
+<!-- Style Sheet-->
+<!-- <link rel="stylesheet" href="style.css" /> -->
+<link rel='stylesheet' id='bootstrap-css-css'
+	href='css/bootstrap5152.css?ver=1.0' type='text/css' media='all' />
+<link rel='stylesheet' id='responsive-css-css'
+	href='css/responsive5152.css?ver=1.0' type='text/css' media='all' />
+<link rel='stylesheet' id='pretty-photo-css-css'
+	href='js/prettyphoto/css/prettyPhotoaeb9.css?ver=3.1.4' type='text/css'
+	media='all' />
+<link rel='stylesheet' id='main-css-css' href='css/main5152.css?ver=1.0'
+	type='text/css' media='all' />
+<link rel='stylesheet' id='custom-css-css'
+	href='css/custom5152.html?ver=1.0' type='text/css' media='all' />
+
+
+</head>
+
+<body>
+
+	<div id="header"></div>
+
+
+	<!-- Start of Search Wrapper -->
+	<div id="search_box"></div>
+	<!-- End of Search Wrapper -->
+
+	<!-- Start of Page Container -->
+
+	<div class="page-container">
+		<div class="container">
+			<div class="row">
+
+				<!-- start of page content -->
+				<div class="span8 page-content">
+
+					<article class="type-page hentry clearfix">
+						<h1 class="post-title">
+							<a href="#">Contact</a>
+						</h1>
+						<hr>
+						<p>欢迎来到本网站注册，这里有你想要的文章</p>
+					</article>
+
+
+					<form id="contact-form" action="" class="row" method="post">
+
+						<div class="span2">
+							<label for="name">姓 名<span>*</span>
+							</label>
+						</div>
+						<div class="span6">
+							<input type="text" name="name" id="name"
+								class="required input-xlarge" value=""
+								title="* Please provide your name">
+						</div>
+
+						<div class="span2">
+							<label for="reason">密 码 </label>
+						</div>
+						<div class="span6">
+							<!-- <input type="text" name="password" id="password" class="input-xlarge"
+								value=""> -->
+							<input type="password" id="nloginpwd" name="password" class="input-xlarge" tabindex="2" autocomplete="off"/>
+                      
+						</div>
+
+						<div class="span2">
+							<label for="email">邮 箱<span>*</span></label>
+						</div>
+						<div class="span6">
+							<input type="text" name="email" id="email"
+								class="email required input-xlarge" value=""
+								title="* Please provide a valid email address">
+						</div>
+
+
+						<div class="span6 offset2 bm30">
+							<input type="submit" id="loginFormPost" name="submit" value="提交"
+								class="btn btn-inverse"> <img src="images/loading.gif"
+								id="contact-loader" alt="Loading...">
+						</div>
+
+						<div class="span6 offset2 error-container"></div>
+						<div class="span8 offset2" id="message-sent"></div>
+
+					</form>
+				</div>
+				<!-- end of page content -->
+
+
+				<!-- start of sidebar -->
+				<aside id="rightSidebar" class="span4 page-sidebar"></aside>
+				<!-- end of sidebar -->
+			</div>
+		</div>
+	</div>
+
+	<!-- End of Page Container -->
+
+	<!-- Start of Footer -->
+	<footer id="footer-wrapper">
+		<div id="footer"></div>
+		<!-- end of #footer -->
+
+		<!-- Footer Bottom -->
+		<div id="footer-button"></div>
+		<!-- End of Footer Bottom -->
+
+	</footer>
+	<!-- End of Footer -->
+
+	<a href="#top" id="scroll-top"></a>
+
+	<!-- script -->
+	<script type='text/javascript' src='js/jquery-1.8.3.min.js'></script>
+	<script type='text/javascript' src='js/jquery.easing.1.3.js'></script>
+	<!-- <script type='text/javascript' src='js/prettyphoto/jquery.prettyPhoto.js'></script> -->
+	<script type='text/javascript' src='js/jflickrfeed.js'></script>
+	<script type='text/javascript' src='js/jquery.liveSearch.js'></script>
+	<script type='text/javascript' src='js/jquery.form.js'></script>
+	<script type='text/javascript' src='js/jquery.validate.min.js'></script>
+	<script type='text/javascript' src='js/custom.js'></script>
+	<script type='text/javascript' src='js/common_WSM.js'></script>
+
+	<script>
+		$(function() {
+			$('#header').load("common/base/header");
+			$("#search_box").load("common/utils/search");
+			$("#footer").load("common/base/footer");
+			$("#footer-button").load("common/base/footer-button");
+
+			$("#loginFormPost").click(loginPostForm);
+		})
+
+		function loginPostForm() {
+			{
+				$.ajax({
+					type : "POST",
+					dataType : "json",
+					url : "/login_1",
+					data : $('#contact-form').serialize(), //提交的数据
+					success : function(result) {
+						console.log(result); //打印服务端返回的数据(调试用)
+						if (result.status == 200) {
+							alert("提交成功");
+							jumpPage();
+						}
+						;
+					},
+					error : function() {
+						alert("提交失败");
+					}
+				});
+			}
+
+		}
+
+		function jumpPage() {
+			location.href = "/index";
+		}
+	</script>
+
+	<script>
+		$(function() {
+
+			$.getJSON("right/sidebar", function(response) {//jsonResult
+				doSetSidebar(response.data);
+			});
+		})
+
+		function doSetSidebar(records) {
+			//1.获取tbody对象,并清空
+			var tBody = $("#rightSidebar");
+			tBody.empty();
+			//2.将记录records进行呈现
+			//2.1迭代记录集
+			for (var i = 0; i < records.length; i++) {
+				tBody
+						.append("<div id=" + records[i].name + "_" + i + "></div>");
+
+				doSidebar(records[i], i);
+			}
+		}
+
+		function doSidebar(record, id) {
+			$("#" + record.name + "_" + id).load(record.url);
+		}
+	</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+
+<aside id="rightSidebar" class="span4 page-sidebar"></aside>
+<script>
+
+	$(function(){
+	//	debugger
+		//$("right-sidebar").load("right/sidebar",function(response){
+			//doSetSidebar(response.data);
+		//});
+		
+		 $.getJSON("right/sidebar", function (response) {//jsonResult
+			 doSetSidebar(response.data);
+     });
+	})
+
+
+
+	function doSetSidebar(records) 
+	{
+                //1.获取tbody对象,并清空
+                var tBody = $("#rightSidebar");
+                tBody.empty();
+                //2.将记录records进行呈现
+                //2.1迭代记录集
+                for (var i = 0; i < records.length; i++)
+                 {
+                        tBody.append("<div id="+records[i].name+"_"+i+"></div>");
+
+						doSidebar(records[i],i);
+                }
+        }
+
+		function doSidebar(record,id)
+		{
+			$("#"+record.name+"_"+id).load(record.url);
+		}
+
+
+</script>

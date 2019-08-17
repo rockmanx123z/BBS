@@ -1,0 +1,162 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- META TAGS -->
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Knowledge Base Theme</title>
+
+	<link rel="shortcut icon" href="http://localhost/images/favicon.png" />
+
+	<!-- Style Sheet-->
+	<!-- <link rel="stylesheet" href="style.css" /> -->
+	<link rel='stylesheet' id='bootstrap-css-css' href='http://localhost/css/bootstrap5152.css?ver=1.0' type='text/css' media='all' />
+	<link rel='stylesheet' id='responsive-css-css' href='http://localhost/css/responsive5152.css?ver=1.0' type='text/css' media='all' />
+	<link rel='stylesheet' id='pretty-photo-css-css' href='http://localhost/js/prettyphoto/css/prettyPhotoaeb9.css?ver=3.1.4'
+		type='text/css' media='all' />
+	<link rel='stylesheet' id='main-css-css' href='http://localhost/css/main5152.css?ver=1.0' type='text/css' media='all' />
+	<link rel='stylesheet' id='custom-css-css' href='http://localhost/css/custom5152.html?ver=1.0' type='text/css' media='all' />
+
+
+</head>
+
+<body>
+
+	<div id="header"></div>
+
+
+	<!-- Start of Search Wrapper -->
+	<div id="search_box"></div>
+	<!-- End of Search Wrapper -->
+
+	<!-- Start of Page Container -->
+	<div class="page-container">
+		<div class="container">
+			<div class="row">
+
+				<!-- start of page content -->
+				<div class="span8 page-content">
+
+					<ul class="breadcrumb">
+						<li><a href="#">Knowledge Base Theme</a><span class="divider">/</span></li>
+						<li><a href="#" title="View all posts in Server &amp; Database">Server &amp;
+								Database</a> <span class="divider">/</span></li>
+						<li class="active">Integrating WordPress with Your Website</li>
+					</ul>
+
+					<article class=" type-post format-standard hentry clearfix">
+
+						<h1 class="post-title">
+							<a id="articlesTitle" href="#" th:text="${artileData.title}">文章题目</a>
+						</h1>
+
+						<div class="post-meta clearfix">
+							<span id="updateTime" class="date" th:text="${artileData.updateTime}">xxxx年xx月xx日</span>
+							<span class="category">
+								<a href="#" title="View all posts in Server &amp; Database"
+									th:text="${artileData.tags}">Server &amp; Database</a>
+							</span>
+							<span class="comments">
+								<a href="#" title="Comment on Integrating WordPress with Your Website">Comments</a>
+							</span>
+							<span id="likeCount" class="like-count" th:text="${artileData.commend}">66</span>
+						</div>
+						<!-- end of post meta -->
+						<!-- 文章主体 -->
+						<div id="articleData" th:text="${artileData.articlesData}"></div>
+
+					</article>
+
+					<div id="likeBtn"></div>
+
+					<div id="comments"></div>
+
+					<!-- end of comments -->
+
+				</div>
+				<!-- end of page content -->
+
+
+				<!-- start of sidebar -->
+				<aside id="rightSidebar" class="span4 page-sidebar"></aside>
+				<!-- end of sidebar -->
+			</div>
+		</div>
+	</div>
+	<!-- End of Page Container -->
+
+	<!-- Start of Footer -->
+	<footer id="footer-wrapper">
+		<div id="footer"></div>
+		<!-- end of #footer -->
+
+		<!-- Footer Bottom -->
+		<div id="footer-button"></div>
+		<!-- End of Footer Bottom -->
+
+	</footer>
+	<!-- End of Footer -->
+
+	<a href="#top" id="scroll-top"></a>
+
+	<!-- script -->
+	<script type='text/javascript' src='http://localhost/js/jquery-1.8.3.min.js'></script>
+	<script type='text/javascript' src='http://localhost/js/jquery.easing.1.3.js'></script>
+	<!-- <script type='text/javascript' src='js/prettyphoto/jquery.prettyPhoto.js'></script> -->
+	<script type='text/javascript' src='http://localhost/js/jflickrfeed.js'></script>
+	<script type='text/javascript' src='http://localhost/js/jquery.liveSearch.js'></script>
+	<script type='text/javascript' src='http://localhost/js/jquery.form.js'></script>
+	<script type='text/javascript' src='http://localhost/js/jquery.validate.min.js'></script>
+	<script type='text/javascript' src='http://localhost/js/custom.js'></script>
+
+	<script>
+
+		$(function () {
+			$('#header').load("http://localhost/common/base/header");
+			$("#search_box").load("http://localhost/common/utils/search");
+			$("#footer").load("http://localhost/common/base/footer");
+			$("#footer-button").load("http://localhost/common/base/footer-button");
+
+			//doLoadUI("","system/index/index_list");
+			//$("#rightSidebar").load("common/base/rightSidebar");
+		})
+
+
+	</script>
+
+	<script>
+
+		$(function () {
+			$.getJSON("right/sidebar", function (response) {//jsonResult
+				doSetSidebar(response.data);
+			});
+		})
+
+		function doSetSidebar(records) {
+			//1.获取tbody对象,并清空
+			var tBody = $("#rightSidebar");
+			tBody.empty();
+			//2.将记录records进行呈现
+			//2.1迭代记录集
+			for (var i = 0; i < records.length; i++) {
+				var tds = doArticles(records[i]);
+				tBody.append("<div id=" + records[i].name + "_" + i + "></div>");
+
+				doSidebar(records[i], i);
+			}
+		}
+
+		function doSidebar(record, id) {
+			$("#" + record.name + "_" + id).load(record.url);
+		}
+
+
+
+	</script>
+
+
+</body>
+
+</html>
